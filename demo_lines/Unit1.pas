@@ -88,8 +88,8 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-//  if Assigned(FDXW_ReleaseDxwResources) then
-//    FDXW_ReleaseDxwResources;
+  //if Assigned(FDXW_ReleaseDxwResources) then
+  //  FDXW_ReleaseDxwResources;
 
   if FDLLHandle <> 0 then
     FreeLibrary(FDLLHandle);
