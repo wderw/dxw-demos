@@ -18,12 +18,12 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
-    FDLLHandle: HMODULE;
-    FDXW_InitWindow: TDXW_InitWindow;
-    FDXW_SetTargetWindow: TDXW_SetTargetWindow;
-    FDXW_DemoLines: TDXW_DemoLines;
-    FDXW_ReleaseDxwResources: TDXW_ReleaseDxwResources;
-    FDXWWindowID: Integer;
+    DLLHandle: HMODULE;
+    DXW_InitWindow: TDXW_InitWindow;
+    DXW_SetTargetWindow: TDXW_SetTargetWindow;
+    DXW_DemoLines: TDXW_DemoLines;
+    DXW_ReleaseDxwResources: TDXW_ReleaseDxwResources;
+    DXWWindowID: Integer;
     function LoadDll: Boolean;
     function LoadFunctions: Boolean;
   public
@@ -39,9 +39,9 @@ implementation
 function TForm1.LoadDll: Boolean;
 begin
   Result := False;
-  FDLLHandle := LoadLibrary('dxw.dll');
+  DLLHandle := LoadLibrary('dxw.dll');
 
-  if FDLLHandle = 0 then
+  if DLLHandle = 0 then
   begin
     MessageBox(Handle, 'Failed to load dxw.dll', 'Error', MB_ICONERROR or MB_OK);
     Exit;
@@ -54,18 +54,18 @@ function TForm1.LoadFunctions: Boolean;
 begin
   Result := False;
 
-  FDXW_InitWindow := GetProcAddress(FDLLHandle, 'DXW_InitWindow');
-  FDXW_SetTargetWindow := GetProcAddress(FDLLHandle, 'DXW_SetTargetWindow');
-  FDXW_DemoLines := GetProcAddress(FDLLHandle, 'DXW_DemoLines');
-  FDXW_ReleaseDxwResources := GetProcAddress(FDLLHandle, 'DXW_ReleaseDxwResources');
+  DXW_InitWindow := GetProcAddress(DLLHandle, 'DXW_InitWindow');
+  DXW_SetTargetWindow := GetProcAddress(DLLHandle, 'DXW_SetTargetWindow');
+  DXW_DemoLines := GetProcAddress(DLLHandle, 'DXW_DemoLines');
+  DXW_ReleaseDxwResources := GetProcAddress(DLLHandle, 'DXW_ReleaseDxwResources');
 
-  if not Assigned(FDXW_InitWindow) or
-     not Assigned(FDXW_SetTargetWindow) or
-     not Assigned(FDXW_DemoLines) or
-     not Assigned(FDXW_ReleaseDxwResources) then
+  if not Assigned(DXW_InitWindow) or
+     not Assigned(DXW_SetTargetWindow) or
+     not Assigned(DXW_DemoLines) or
+     not Assigned(DXW_ReleaseDxwResources) then
   begin
     MessageBox(Handle, 'Failed to load one or more functions from dxw.dll', 'Error', MB_ICONERROR or MB_OK);
-    FreeLibrary(FDLLHandle);
+    FreeLibrary(DLLHandle);
     Exit;
   end;
 
@@ -80,19 +80,19 @@ begin
   if not LoadFunctions then
     Exit;
 
-  FDXWWindowID := FDXW_InitWindow(Panel1.Handle);
+  DXWWindowID := DXW_InitWindow(Panel1.Handle);
 
-  FDXW_SetTargetWindow(FDXWWindowID);
-  FDXW_DemoLines(1000000);
+  DXW_SetTargetWindow(DXWWindowID);
+  DXW_DemoLines(1000000);
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  //if Assigned(FDXW_ReleaseDxwResources) then
-  //  FDXW_ReleaseDxwResources;
+  //if Assigned(DXW_ReleaseDxwResources) then
+  //  DXW_ReleaseDxwResources;
 
-  if FDLLHandle <> 0 then
-    FreeLibrary(FDLLHandle);
+  if DLLHandle <> 0 then
+    FreeLibrary(DLLHandle);
 end;
 
 end.
