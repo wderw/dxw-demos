@@ -41,6 +41,10 @@
 # Delphi compiler-generated binaries (safe to delete)
 *.exe
 *.dll
+
+# Except for dxw.dll
+!dxw.dll
+
 *.bpl
 *.bpi
 *.dcp
