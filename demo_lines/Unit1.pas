@@ -29,6 +29,7 @@ type
     DXWWindowID: Integer;
     function LoadDll: Boolean;
     function LoadFunctions: Boolean;
+    procedure CreateConsole;
   public
   end;
 
@@ -79,8 +80,27 @@ begin
   Result := True;
 end;
 
+procedure TForm1.CreateConsole;
+var
+  StdOut: THandle;
+begin
+  AllocConsole;  // Funkcja win32 do szybkiej alokacji konsoli
+  StdOut := GetStdHandle(STD_OUTPUT_HANDLE);
+
+  // Przekieruj wyjscie standardowe do konsoli
+  if StdOut <> INVALID_HANDLE_VALUE then
+  begin
+    AssignFile(Output, '');
+    Rewrite(Output);
+  end;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  // otwórz konsolê do przegl¹dania logow z dll
+  CreateConsole;
+  Writeln('[application log] hello from delphi!');
+
   if not LoadDll then
     Exit;
 

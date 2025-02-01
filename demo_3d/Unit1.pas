@@ -1,4 +1,4 @@
-unit Unit1;
+ï»¿unit Unit1;
 
 interface
 
@@ -7,7 +7,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-// definicje typów wskaŸników do funkcji z DLL
+// definicje typï¿½w wskaï¿½nikï¿½w do funkcji z DLL
   TDXW_InitWindow = function(hWnd: HWND): Integer; stdcall;
   TDXW_SetTargetWindow = procedure(TargetWindow: Integer); stdcall;
   TDXW_Demo3D = procedure(); stdcall;
@@ -18,10 +18,11 @@ type
     Panel1: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure CreateConsole;
   private
     // uchwyt do DLL
     DLLHandle: HMODULE;
-    // wskaŸniki do funkcji
+    // wskaï¿½niki do funkcji
     DXW_InitWindow: TDXW_InitWindow;
     DXW_SetTargetWindow: TDXW_SetTargetWindow;
     DXW_Demo3D: TDXW_Demo3D;
@@ -40,7 +41,7 @@ implementation
 {$R *.dfm}
 
 
-// ³adowanie DLL
+// ï¿½adowanie DLL
 function TForm1.LoadDll: Boolean;
 begin
   Result := False;
@@ -56,7 +57,7 @@ begin
 end;
 
 
-// ³adowanie funkcji z dll
+// ï¿½adowanie funkcji z dll
 function TForm1.LoadFunctions: Boolean;
 begin
   Result := False;
@@ -64,7 +65,7 @@ begin
   DXW_InitWindow := GetProcAddress(DLLHandle, 'DXW_InitWindow');                    // inicjalizacja okna i uzyskanie ID
   DXW_SetTargetWindow := GetProcAddress(DLLHandle, 'DXW_SetTargetWindow');          // ustawianie aktualnego okna po ID
   DXW_Demo3D := GetProcAddress(DLLHandle, 'DXW_Demo3D');                            // demo start
-  DXW_ReleaseDxwResources := GetProcAddress(DLLHandle, 'DXW_ReleaseDxwResources');  // zwalnianie zasobów biblioteki
+  DXW_ReleaseDxwResources := GetProcAddress(DLLHandle, 'DXW_ReleaseDxwResources');  // zwalnianie zasobï¿½w biblioteki
 
   if not Assigned(DXW_InitWindow) or
      not Assigned(DXW_SetTargetWindow) or
@@ -79,19 +80,38 @@ begin
   Result := True;
 end;
 
+procedure TForm1.CreateConsole;
+var
+  StdOut: THandle;
+begin
+  AllocConsole;  // Funkcja win32 do szybkiej alokacji konsoli
+  StdOut := GetStdHandle(STD_OUTPUT_HANDLE);
+
+  // Przekieruj wyjscie standardowe do konsoli
+  if StdOut <> INVALID_HANDLE_VALUE then
+  begin
+    AssignFile(Output, '');
+    Rewrite(Output);
+  end;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  // otwï¿½rz konsolï¿½ do przeglï¿½dania logï¿½w z dll
+  CreateConsole;
+  Writeln('[application log] hello from delphi!');
+
   if not LoadDll then
     Exit;
 
   if not LoadFunctions then
     Exit;
 
-  { inicjalizacja zasobów directx dla Panel1.
-    Biblioteka generuje WindowID które zapisujemy }
+  { inicjalizacja zasobï¿½w directx dla Panel1.
+    Biblioteka generuje WindowID ktï¿½re zapisujemy }
   DXWWindowID := DXW_InitWindow(Panel1.Handle);
 
-  // od tego momentu wszystkie dalsze wywo³ania funkcji DXW dotycz¹ okna na Panel1
+  // od tego momentu wszystkie dalsze wywoï¿½ania funkcji DXW dotyczï¿½ okna na Panel1
   DXW_SetTargetWindow(DXWWindowID);
 
   // start demo
