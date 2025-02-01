@@ -7,7 +7,7 @@ uses
   Vcl.ExtCtrls;
 
 type
-// definicje typ�w wska�nik�w do funkcji z DLL
+// definicje typów wskaźników do funkcji z DLL
   TDXW_InitWindow = function(hWnd: HWND): Integer; stdcall;
   TDXW_SetTargetWindow = procedure(TargetWindow: Integer); stdcall;
   TDXW_Demo3D = procedure(); stdcall;
@@ -22,7 +22,7 @@ type
   private
     // uchwyt do DLL
     DLLHandle: HMODULE;
-    // wska�niki do funkcji
+    // wskaźniki do funkcji
     DXW_InitWindow: TDXW_InitWindow;
     DXW_SetTargetWindow: TDXW_SetTargetWindow;
     DXW_Demo3D: TDXW_Demo3D;
@@ -41,7 +41,7 @@ implementation
 {$R *.dfm}
 
 
-// �adowanie DLL
+// ładowanie DLL
 function TForm1.LoadDll: Boolean;
 begin
   Result := False;
@@ -57,7 +57,7 @@ begin
 end;
 
 
-// �adowanie funkcji z dll
+// ładowanie funkcji z dll
 function TForm1.LoadFunctions: Boolean;
 begin
   Result := False;
@@ -65,7 +65,7 @@ begin
   DXW_InitWindow := GetProcAddress(DLLHandle, 'DXW_InitWindow');                    // inicjalizacja okna i uzyskanie ID
   DXW_SetTargetWindow := GetProcAddress(DLLHandle, 'DXW_SetTargetWindow');          // ustawianie aktualnego okna po ID
   DXW_Demo3D := GetProcAddress(DLLHandle, 'DXW_Demo3D');                            // demo start
-  DXW_ReleaseDxwResources := GetProcAddress(DLLHandle, 'DXW_ReleaseDxwResources');  // zwalnianie zasob�w biblioteki
+  DXW_ReleaseDxwResources := GetProcAddress(DLLHandle, 'DXW_ReleaseDxwResources');  // zwalnianie zasobów biblioteki
 
   if not Assigned(DXW_InitWindow) or
      not Assigned(DXW_SetTargetWindow) or
@@ -97,7 +97,7 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  // otw�rz konsol� do przegl�dania log�w z dll
+  // otwórz konsolę do przeglądania logów z dll
   CreateConsole;
   Writeln('[application log] hello from delphi!');
 
@@ -107,11 +107,11 @@ begin
   if not LoadFunctions then
     Exit;
 
-  { inicjalizacja zasob�w directx dla Panel1.
-    Biblioteka generuje WindowID kt�re zapisujemy }
+  { inicjalizacja zasobów directx dla Panel1.
+    Biblioteka generuje WindowID które zapisujemy }
   DXWWindowID := DXW_InitWindow(Panel1.Handle);
 
-  // od tego momentu wszystkie dalsze wywo�ania funkcji DXW dotycz� okna na Panel1
+  // od tego momentu wszystkie dalsze wywołania funkcji DXW dotyczą okna na Panel1
   DXW_SetTargetWindow(DXWWindowID);
 
   // start demo
