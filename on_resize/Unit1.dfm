@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  Caption = 'demo lines'
-  ClientHeight = 683
-  ClientWidth = 946
+  Caption = 'demo 3d'
+  ClientHeight = 711
+  ClientWidth = 978
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,13 +12,15 @@ object Form1: TForm1
   Font.Style = []
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnResize = FormResize
+  OnShow = FormShow
   TextHeight = 15
-  object Panel1: TPanel
-    Left = 8
-    Top = 8
-    Width = 937
-    Height = 667
-    Caption = 'Panel1'
+  object CheckBox1: TCheckBox
+    Left = 16
+    Top = 72
+    Width = 121
+    Height = 17
+    Caption = 'dxw OnResize'
     TabOrder = 0
   end
 end
