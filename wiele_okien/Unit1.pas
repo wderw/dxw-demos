@@ -72,7 +72,7 @@ begin
 
   @DXW_InitWindow := GetProcAddress(DLLHandle, 'DXW_InitWindow');                    // inicjalizacja okna i uzyskanie ID
   @DXW_SetTargetWindow := GetProcAddress(DLLHandle, 'DXW_SetTargetWindow');          // ustawianie aktualnego okna po ID
-  @DXW_Demo3D := GetProcAddress(DLLHandle, 'DXW_DemoRT');                            // demo start
+  @DXW_Demo3D := GetProcAddress(DLLHandle, 'DXW_Demo3D');                            // demo start
 
   if not Assigned(DXW_InitWindow) or
      not Assigned(DXW_SetTargetWindow) or
