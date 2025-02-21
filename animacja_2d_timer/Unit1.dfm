@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  Caption = 'rysowanie 2d'
+  Caption = 'animacja 2d sterowana timerem'
   ClientHeight = 683
   ClientWidth = 946
   Color = clBtnFace
