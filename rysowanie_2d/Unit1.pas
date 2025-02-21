@@ -22,6 +22,7 @@ type
   TDXW_D2D_ResetTransformMatrixFunc = procedure; stdcall;
   TDXW_D2D_DrawTextFunc = procedure(Text: PWideChar; Left, Top, Right, Bottom: Single); stdcall;
   TDXW_D2D_FillRoundedRectangleFunc = procedure(Left, Top, Right, Bottom, RadiusX, RadiusY : Single); stdcall;
+  TDXW_D2D_DrawRoundedRectangleFunc = procedure(Left, Top, Right, Bottom, RadiusX, RadiusY : Single); stdcall;
   TDXW_PresentFunc = procedure(WaitForVerticalSync: Integer); stdcall;
 
 type
@@ -49,6 +50,7 @@ type
     DXW_D2D_ResetTransformMatrix: TDXW_D2D_ResetTransformMatrixFunc;
     DXW_D2D_DrawText: TDXW_D2D_DrawTextFunc;
     DXW_D2D_FillRoundedRectangle: TDXW_D2D_FillRoundedRectangleFunc;
+    DXW_D2D_DrawRoundedRectangle: TDXW_D2D_DrawRoundedRectangleFunc;
     DXW_Present: TDXW_PresentFunc;
 
     DXWWindowID: Integer;
@@ -103,6 +105,7 @@ begin
   @DXW_D2D_ResetTransformMatrix := GetProcAddress(DLLHandle, 'DXW_D2D_ResetTransformMatrix');
   @DXW_D2D_DrawText := GetProcAddress(DLLHandle, 'DXW_D2D_DrawText');
   @DXW_D2D_FillRoundedRectangle := GetProcAddress(DLLHandle, 'DXW_D2D_FillRoundedRectangle');
+  @DXW_D2D_DrawRoundedRectangle := GetProcAddress(DLLHandle, 'DXW_D2D_DrawRoundedRectangle');
 
   if not Assigned(DXW_InitWindow) or
      not Assigned(DXW_SetTargetWindow) or
@@ -136,6 +139,8 @@ begin
   DXW_D2D_DrawText(text, 50, 50, 200, 200); // jeszcze raz ten sam tekst ale po na³o¿eniu transformacji
 
   DXW_D2D_ResetTransformMatrix();       // resetuje wszystkie macierze
+  DXW_D2D_DrawRoundedRectangle(25, 45, 100, 100, 15.0, 5.0);  // wype³niony zaokr¹glony prostok¹t
+
   DXW_D2D_DrawText(text, 150, 150, 300, 300); // po zresetowaniu transformacji
   DXW_D2D_DrawLine(0, 0, Panel1.Width, Panel1.Height);  // narysuj linie
   DXW_D2D_FillRoundedRectangle(15, 15, 200, 300, 15.0, 25.0);  // wype³niony zaokr¹glony prostok¹t
