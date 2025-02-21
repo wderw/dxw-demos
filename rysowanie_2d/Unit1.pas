@@ -114,15 +114,15 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
+var text : PWideChar;
 begin
-  // od tego momentu wszystkie dalsze wywo³ania funkcji DXW dotycz¹ okna na Panel1
-  DXW_SetTargetWindow(DXWWindowID);
+  text := 'Za¿ó³æ gêœl¹ jaŸñ the quick brown fox jumps over the lazy dog';
 
   // rysowanie
   DXW_D2D_BeginDraw();                  // rozpocznij rysowanie 2D
   DXW_D2D_Clear(0, 0, 0, 1);            // wyczysc caly obszar kontrolki r,g,b,A (1 = pelny kolor, 0 = pelna przezroczystosc)
 
-  DXW_D2D_DrawText(PWideChar('Hello from Delphi'), 50, 50, 200, 200);  // left, top, right, bottom
+  DXW_D2D_DrawText(text, 50, 50, 200, 200);  // left, top, right, bottom
 
   DXW_D2D_SetScale(2.0, 3.0);           // skala               (S)
   DXW_D2D_SetRotation(15);              // obrot (w stopniach) (R)
@@ -130,12 +130,11 @@ begin
   DXW_D2D_RecalculateTransformMatrix(); // przelicz polaczona macierz transformacji zgodnie ze wzorem: Transform = T * R * S
                                         // od tego momentu wszystkie wektory mno¿one s¹ przez macierz transformacji
 
-  DXW_D2D_DrawText(PWideChar('Hello from Delphi 2'), 50, 50, 200, 200); // jeszcze raz ten sam tekst ale po na³o¿eniu transformacji
+  DXW_D2D_DrawText(text, 50, 50, 200, 200); // jeszcze raz ten sam tekst ale po na³o¿eniu transformacji
 
   DXW_D2D_ResetTransformMatrix();       // resetuje wszystkie macierze
-  DXW_D2D_DrawText(PWideChar('Hello from Delphi 3'), 150, 150, 300, 300); // po zresetowaniu transformacji
-
-  DXW_D2D_DrawLine(0, 0, Panel1.Width, Panel1.Height);  // narysuj linie bez zadnych dodatkowych transformacji
+  DXW_D2D_DrawText(text, 150, 150, 300, 300); // po zresetowaniu transformacji
+  DXW_D2D_DrawLine(0, 0, Panel1.Width, Panel1.Height);  // narysuj linie
 
   DXW_D2D_EndDraw();                    // zakoncz rysowanie 2D
   DXW_Present(1);                       // wszystko do tej pory bylo rysowane na 2 buforze, dopiero present zamienia bufory miejscami i wyswietla
@@ -171,6 +170,9 @@ begin
   { inicjalizacja zasobów directx dla Panel1.
     Biblioteka generuje WindowID które zapisujemy }
   DXWWindowID := DXW_InitWindow(Panel1.Handle);
+
+  // od tego momentu wszystkie dalsze wywo³ania funkcji DXW dotycz¹ okna na Panel1
+  DXW_SetTargetWindow(DXWWindowID);
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
