@@ -45,7 +45,7 @@ implementation
 function TForm1.LoadDll: Boolean;
 begin
   Result := False;
-  DLLHandle := LoadLibrary('../../../lib/dxw.dll');
+  DLLHandle := LoadLibrary('../../../lib/debug/dxw.dll');
 
   if DLLHandle = 0 then
   begin
